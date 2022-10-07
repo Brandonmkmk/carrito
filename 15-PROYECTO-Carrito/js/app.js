@@ -48,17 +48,16 @@ const agregarCurso = (e) => {
             const row = document.createElement('tr');
             const cursoHTML = ` 
             <td>
-             <img src="${curso.imagen}" width= 100>
+            <img src="${curso.imagen}" width= 100>
             </td>
-            <td>
-            ${curso.nombre}
-        </td>
-        <td>
-        ${curso.precio}
-    </td>
+
+            <td>${curso.nombre} </td>
+        <td>${curso.precio}</td>
+    <td>${curso.cantidad}</td>
     <td>
-    ${curso.cantidad}
-</td>
+           <a href = "#" class ="borrar-curso" data id="$(curso.id)">x</a
+           </td>
+
             `;
             row.innerHTML = cursoHTML;
             contenedorCarrito.appendChild(row);
@@ -67,8 +66,19 @@ const agregarCurso = (e) => {
 }
 
     const vaciarCarrito = () => {
-       
-        contenedorCarrito.innerHTML = ""; }
+        contenedorCarrito.innerHTML = ""; 
+    }
+
+    const eliminarCurso = (e) => {
+        e.preventDefault();
+        if(e.target.classList.contains('borrar-curso')) {
+            let idCurso = e.target.getAttribute('data-id')
+            let carrito = listadoCarrito.filter(cursoInCarrito => cursoInCarrito.id !== idCurso)
+        listadoCarrito = [...carrito];
+        generHTML();
+    }
+}
+    
     
 
 
@@ -76,5 +86,7 @@ const cargarEventListener = () => {
     //Agregar funcion de carga de cursos al carrito
 
     listaCursos.addEventListener('click', agregarCurso);
+    contenedorCarrito.addEventListener('click', eliminarCurso);
+    vaciarCarritoBtn.addEventListener('click', vaciarCarrito);
 }
 cargarEventListener();

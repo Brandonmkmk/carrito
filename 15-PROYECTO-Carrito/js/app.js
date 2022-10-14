@@ -44,6 +44,7 @@ const agregarCurso = (e) => {
     }
     const generHTML = () => {
         vaciarCarrito();
+        localStorage.setItem('carrito', JSON.stringify(listadoCarrito));
         listadoCarrito.forEach (curso => {
             const row = document.createElement('tr');
             const cursoHTML = ` 
@@ -66,10 +67,12 @@ const agregarCurso = (e) => {
 }
 
     const vaciarCarrito = () => {
-        contenedorCarrito.innerHTML = ""; 
+        while(contenedorCarrito.firstChild) {
+            contenedorCarrito.removeChild(contenedorCarrito.firstChild);
+        }
     }
 
-    const eliminarCurso = (e) => {
+    const eliminarCurso = (e) => { 
         e.preventDefault();
         if(e.target.classList.contains('borrar-curso')) {
             let idCurso = e.target.getAttribute('data-id')
@@ -88,5 +91,11 @@ const cargarEventListener = () => {
     listaCursos.addEventListener('click', agregarCurso);
     contenedorCarrito.addEventListener('click', eliminarCurso);
     vaciarCarritoBtn.addEventListener('click', vaciarCarrito);
+
+    const carritoInStorage = localStorage.getItem('carrito')
+    if(carritoInStorage) {
+        listadoCarrito = JSON.parse(carritoInStorage);
+        generHTML();
+    }
 }
 cargarEventListener();
